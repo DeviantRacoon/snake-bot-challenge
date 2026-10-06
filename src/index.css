@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .font-arcade {
+    font-family: 'Press Start 2P', monospace;
+  }
+
+  .font-pixel {
+    font-family: 'VT323', monospace;
+  }
+}
+
+/* Pantalla LCD Game Boy clásica */
+.gb-screen {
+  position: relative;
+  overflow: hidden;
+  background-color: #8b956d;
+}
+
+/* Matriz de píxeles / rejilla LCD Game Boy */
+.gb-screen::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background:
+    linear-gradient(rgba(15, 56, 15, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 56, 15, 0.08) 1px, transparent 1px);
+  background-size: 3px 3px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* Reflejo de cristal y sombra interior */
+.gb-screen::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.03) 40%,
+      transparent 60%);
+  box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.5), inset -2px -2px 6px rgba(255, 255, 255, 0.1);
+  z-index: 21;
+  pointer-events: none;
+}
+
+/* Botones A / B táctiles optimizados para pulgar móvil (54px) */
+.gb-btn-round {
+  width: 52px;
+  height: 52px;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 35% 35%, #a21caf, #881337 60%, #4c0519);
+  box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.6), inset 1.5px 1.5px 2px rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 0.05s ease, box-shadow 0.05s ease;
+}
+
+.gb-btn-round:active {
+  transform: translate(1px, 2px);
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.7), inset 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Botones SELECT / START táctiles ampliados */
+.gb-pill-btn {
+  width: 52px;
+  height: 16px;
+  border-radius: 9999px;
+  background: #475569;
+  box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.5), inset 1px 1px 1px rgba(255, 255, 255, 0.25);
+  transform: rotate(-25deg);
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.gb-pill-btn:active {
+  transform: rotate(-25deg) translate(1px, 1px);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.6);
+  background: #334155;
+}
+
+/* Efectos visuales de activación de la cruceta (D-PAD) */
+.gb-dpad-btn:active,
+.gb-dpad-btn.is-pressed {
+  color: #ffffff;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
+}
+
+.gb-dpad-btn[data-dir="UP"]:active,
+.gb-dpad-btn[data-dir="UP"].is-pressed {
+  transform: translateY(2px);
+}
+
+.gb-dpad-btn[data-dir="DOWN"]:active,
+.gb-dpad-btn[data-dir="DOWN"].is-pressed {
+  transform: translateY(-2px);
+}
+
+.gb-dpad-btn[data-dir="LEFT"]:active,
+.gb-dpad-btn[data-dir="LEFT"].is-pressed {
+  transform: translateX(2px);
+}
+
+.gb-dpad-btn[data-dir="RIGHT"]:active,
+.gb-dpad-btn[data-dir="RIGHT"].is-pressed {
+  transform: translateX(-2px);
+}
