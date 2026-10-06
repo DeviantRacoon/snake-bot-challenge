@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useReducer } from 'react';
 import { SnakeGame } from './game/SnakeGame';
 import { GameController } from './game/GameController';
+import { AIController } from './game/AIController';
 import { type Difficulty, type Direction, DIFFICULTY_SPEEDS } from './game/types';
 import {
   CaretUp,
@@ -25,15 +26,16 @@ export default function App() {
   const [difficulty, setDifficulty] = useState<Difficulty>('EASY');
   const [useAI, setUseAI] = useState(false);
   const gameRef = useRef<SnakeGame | null>(null);
-  const controllerRef = useRef<GameController>(new GameController());
+  const manualControllerRef = useRef<GameController>(new GameController());
+  const aiControllerRef = useRef<AIController>(new AIController());
 
   // Instanciar el juego (POO) y enlazarlo una sola vez
   useEffect(() => {
-    const controller = controllerRef.current;
-    const game = new SnakeGame(20, 20, controller, () => {
+    const initialController = manualControllerRef.current;
+    const game = new SnakeGame(20, 20, initialController, () => {
       forceUpdate();
     });
-    controller.setGame(game);
+    aiControllerRef.current.setGame(game);
     gameRef.current = game;
 
     return () => {
@@ -43,12 +45,15 @@ export default function App() {
 
   const handleStartGame = () => {
     if (!gameRef.current) return;
-    controllerRef.current.setMode(useAI ? 'AI' : 'MANUAL');
+    const targetController = useAI ? aiControllerRef.current : manualControllerRef.current;
+    gameRef.current.setController(targetController);
     gameRef.current.start();
   };
 
   const handleDirection = (dir: Direction) => {
-    controllerRef.current.sendDirection(dir);
+    if (!useAI) {
+      manualControllerRef.current.sendDirection(dir);
+    }
   };
 
   // Game loop dinámico según la dificultad seleccionada

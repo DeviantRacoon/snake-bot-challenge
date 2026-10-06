@@ -129,8 +129,8 @@ export class SnakeGame {
   update() {
     if (!this.hasStarted || this.isGameOver || this.isPaused) return;
 
-    if ('stepAI' in this.controller && typeof (this.controller as any).stepAI === 'function') {
-      (this.controller as any).stepAI();
+    if ('step' in this.controller && typeof (this.controller as any).step === 'function') {
+      (this.controller as any).step();
     }
 
     this.direction = this.nextDirection;
