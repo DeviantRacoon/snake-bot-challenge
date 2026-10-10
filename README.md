@@ -46,6 +46,17 @@ La arquitectura del juego ya cuenta con una interfaz de entrada desacoplada:
    - **Nivel 2:** A* con validación de escape (Flood Fill / verificación de camino a la cola).
    - **Nivel 3:** Algoritmos avanzados / Ciclos Hamiltonianos / Redes Neuronales (RL).
 
+### 🎨 Visualización de Ruta en Tiempo Real *(Opcional)*
+Para facilitar el debug y ver cómo "piensa" tu bot, `AIController` cuenta con herramientas visuales opcionales:
+
+```typescript
+// En tu método step():
+this.clearPixels(); // Limpia el rastro anterior
+this.setPath(miRutaCalculada, 'rgba(15, 56, 15, 0.45)'); // Pinta la ruta planificada
+this.setPixel(objetivoX, objetivoY, '#3b82f6'); // O píxeles individuales
+```
+> Si decides no usarlo, el juego funciona exactamente igual sin necesidad de pintar píxeles.
+
 ---
 
 ## 🛠️ Stack Tecnológico

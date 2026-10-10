@@ -121,30 +121,43 @@ export default function App() {
                 backgroundColor: lcdFilter ? '#8b956d' : '#9bbc0f',
               }}
             >
-              {Array.from({ length: game.height }).map((_, y) =>
-                Array.from({ length: game.width }).map((_, x) => {
-                  const isHead = game.snake[0]?.x === x && game.snake[0]?.y === y;
-                  const isBody = !isHead && game.snake.some((seg) => seg.x === x && seg.y === y);
-                  const isFood = game.food.x === x && game.food.y === y;
+              {(() => {
+                const activeController = game.getController();
+                const debugPixels = activeController instanceof AIController ? activeController.getPixels() : null;
 
-                  return (
-                    <div
-                      key={`${x}-${y}`}
-                      className="relative flex items-center justify-center"
-                    >
-                      {isHead && (
-                        <div className="w-full h-full bg-[#0f380f] rounded-[1px] border border-[#306230]" />
-                      )}
-                      {isBody && (
-                        <div className="w-[90%] h-[90%] bg-[#1b4a1b] rounded-[1px]" />
-                      )}
-                      {isFood && (
-                        <div className="w-[80%] h-[80%] bg-[#0f380f] rounded-full animate-pulse border border-[#8b956d]" />
-                      )}
-                    </div>
-                  );
-                })
-              )}
+                return Array.from({ length: game.height }).map((_, y) =>
+                  Array.from({ length: game.width }).map((_, x) => {
+                    const isHead = game.snake[0]?.x === x && game.snake[0]?.y === y;
+                    const isBody = !isHead && game.snake.some((seg) => seg.x === x && seg.y === y);
+                    const isFood = game.food.x === x && game.food.y === y;
+                    const debugColor = debugPixels?.get(`${x},${y}`);
+
+                    return (
+                      <div
+                        key={`${x}-${y}`}
+                        className="relative flex items-center justify-center"
+                      >
+                        {/* Overlay visual de IA/Ruta */}
+                        {debugColor && !isHead && !isBody && !isFood && (
+                          <div
+                            className="w-[75%] h-[75%] rounded-[1px] transition-colors"
+                            style={{ backgroundColor: debugColor }}
+                          />
+                        )}
+                        {isHead && (
+                          <div className="w-full h-full bg-[#0f380f] rounded-[1px] border border-[#306230]" />
+                        )}
+                        {isBody && (
+                          <div className="w-[90%] h-[90%] bg-[#1b4a1b] rounded-[1px]" />
+                        )}
+                        {isFood && (
+                          <div className="w-[80%] h-[80%] bg-[#0f380f] rounded-full animate-pulse border border-[#8b956d]" />
+                        )}
+                      </div>
+                    );
+                  })
+                );
+              })()}
             </div>
 
             {/* Marcador LCD integrado */}

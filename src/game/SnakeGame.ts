@@ -56,6 +56,10 @@ export class SnakeGame {
     this.setupController();
   }
 
+  getController(): IInputController {
+    return this.controller;
+  }
+
   private setupController() {
     this.controller.init((dir: Direction) => {
       this.handleInput(dir);
